@@ -50,6 +50,6 @@ export class User extends Model<User, UserCreationAttrs> {
   @Column({ type: DataTypes.BOOLEAN, defaultValue: false })
   isActivate: boolean;
 
-  @BelongsToMany(() => Role, () => UserRoles)
-  users: Role[];
+  @BelongsToMany(()=>Role,()=>UserRoles)
+  roles:Role[]
 }
