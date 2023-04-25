@@ -11,4 +11,6 @@ export class CreateUserDto {
   readonly name: string;
   @ApiProperty({ example: 'Male', description: 'User gender' })
   readonly gender: string;
+  @ApiProperty({example:'sadasdasdadqweqeq',description:'Actiovation link'})
+  readonly  activationLink:string;
 }

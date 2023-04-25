@@ -1,6 +1,6 @@
 import { User } from './users.model';
 import { InjectModel } from '@nestjs/sequelize';
-import { Injectable } from '@nestjs/common';
+import {HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { RolesService } from 'src/roles/roles.service';
 
@@ -24,7 +24,29 @@ export class UsersService {
     return users;
   }
 
-  // async getUserByPhone() {}
+  async getUserByPhone(phone:string) {
+    const user=await this.userRepository.findOne({where:{phone:phone},include:{all:true}})
+    return user
+  }
 
-  // async getUserByEmail() {}
+  async getUserByEmail(email:string) {
+    const user=await this.userRepository.findOne({where:{email:email},include:{all:true}})
+    return user
+  }
+
+  async activateUser(link) {
+    const candidate = await this.userRepository.findOne({where:{activationLink:link}})
+    if (!candidate ) throw new HttpException('Не рабочая ссылка для активации',HttpStatus.BAD_GATEWAY)
+    candidate.isActivate=true;
+    await candidate.save()
+    //костыль для передресации
+    return true
+
+  }
+  async findById(id){
+    const user = await this.userRepository.findOne({where:{id:id}})
+    return user
+
+  }
+
 }
